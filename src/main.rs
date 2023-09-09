@@ -4,6 +4,10 @@
 
 #![no_std]
 #![no_main]
+//#![feature(abi_x86_interrupt)]
+
+extern crate x86_64;
+//use x86_64::structures::idt::InterruptStackFrame;
 
 mod vga_buffer;
 
@@ -17,6 +21,26 @@ fn panic(info: &PanicInfo) -> ! {
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
-    println!("Hi mom {}", 1.0/3.0);
+    println!("Hi mom {}", 10.0/0.0);
+    let invalid_address = 0xdeadbeec as *const u32;
+    unsafe {
+        let _value = *invalid_address;
+    }
     loop {} 
 }
+
+
+/* 
+// Define the Page Fault handler function
+#[allow(experimental)]
+extern "x86-interrupt" fn page_fault_handler(
+    stack_frame: &mut InterruptStackFrame,
+    error_code: u64,
+) {
+    // Print the error code using println!
+    println!("Page Fault Exception - Error Code: 0x{:X}", error_code);
+
+    // Additional handling logic can be added here if needed.
+    return;
+}
+*/
