@@ -1,4 +1,4 @@
-# os
+# OS
 An "OS" made primarily with Philipp Oppermann's blog
 
 # Compile
