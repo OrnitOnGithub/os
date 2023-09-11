@@ -22,11 +22,13 @@ fn panic(info: &PanicInfo) -> ! {
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
     println!("Hi mom {}", 10.0/0.0);
-    let invalid_address = 0xdeadbeec as *const u32;
-    unsafe {
-        let _value = *invalid_address;
-    }
-    loop {} 
+    rust_os::init();
+
+    // invoke a breakpoint exception
+    x86_64::instructions::interrupts::int3();
+
+    println!("It did not crash!");
+    loop {}
 }
 
 
