@@ -1,14 +1,6 @@
-// compile with: cargo build --target x86_64-rust_os.json
-// compile rust std for bare metal: cargo build -Z build-std --target x86_64-rust_os.json
-// qemu-system-x86_64 -drive format=raw,file=target/x86_64-rust_os/debug/bootimage-rust_os.bin
-
 #![no_std]
 #![no_main]
-//#![feature(abi_x86_interrupt)]
-
 extern crate x86_64;
-//use x86_64::structures::idt::InterruptStackFrame;
-
 mod vga_buffer;
 
 use core::panic::PanicInfo;
@@ -27,22 +19,12 @@ pub extern "C" fn _start() -> ! {
     // invoke a breakpoint exception
     x86_64::instructions::interrupts::int3();
 
+    let address: u32 = 0x80000000; // An address outside the allocated page
+    unsafe {
+        // Try to read from an invalid address
+        let _value = *(address as *const u32);
+    }
+
     println!("It did not crash!");
     loop {}
 }
-
-
-/* 
-// Define the Page Fault handler function
-#[allow(experimental)]
-extern "x86-interrupt" fn page_fault_handler(
-    stack_frame: &mut InterruptStackFrame,
-    error_code: u64,
-) {
-    // Print the error code using println!
-    println!("Page Fault Exception - Error Code: 0x{:X}", error_code);
-
-    // Additional handling logic can be added here if needed.
-    return;
-}
-*/
