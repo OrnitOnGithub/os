@@ -1,0 +1,5 @@
+- Update dependencies
+- UEFI, multiboot and various support
+- Handle CPU exceptions
+- Handle hardware interrupts
+- Delete the bullsit you did and actually follow the tutorial.
