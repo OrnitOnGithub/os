@@ -1,4 +1,4 @@
-# Compile and run.
+# Compile into bootimage and run.
 # Remember to chmod +x this and run it without sudo.
 cargo bootimage # Compile and turn into bootimage using cargo crate "bootimage"
 echo ""
