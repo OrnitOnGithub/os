@@ -1,4 +1,0 @@
-- Update dependencies
-- UEFI, multiboot and various support
-- Handle CPU exceptions & double faults
-- Handle hardware interrupts
