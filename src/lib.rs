@@ -4,6 +4,9 @@ pub mod interrupts;
 pub mod vga_buffer;
 pub mod gdt;
 
+// Initiate all the initiatables. Called once at system startup.
 pub fn init() {
+    gdt::init();
     interrupts::init_idt();
+    unsafe { interrupts::PICS.lock().initialize() };
 }
