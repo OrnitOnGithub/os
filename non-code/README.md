@@ -1,14 +1,20 @@
 # OS
-An "OS" made primarily with Philipp Oppermann's blog
 
-# Compile
-This might be wrong idk lol
+An Rust kernel made primarily with Philipp Oppermann's blog and the OSDEV wiki.
 
-- compile rust std for bare metal:
-  - cargo build -Z build-std --target x86_64-rust_os.json
 
-also switch to rust nightly i think 
+# Setup
 
-- then compile & run the project:
+install everything and run
+- rustup component add rust-src --toolchain nightly-x86_64-unknown-linux-gnu
+- rustup override set nightly
+- rustup component add llvm-tools-preview
+- cargo install bootimage
+- dnf install qemu
+- ./runc.sh (or run.sh if you don't want to compile beforehand)
   - cargo bootimage
   - qemu-system-x86_64 -drive format=raw,file=target/x86_64-rust_os/debug/bootimage-rust_os.bin
+
+also this was in my notes and i have no clue why
+- compile rust std for bare metal:
+  - cargo build -Z build-std --target x86_64-rust_os.json
