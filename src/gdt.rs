@@ -7,6 +7,11 @@ use lazy_static::lazy_static;
 
 pub const DOUBLE_FAULT_IST_INDEX: u16 = 0;
 
+// Used in lib.rs init()
+pub fn init() {
+    GDT.load();
+}
+
 // TSS - Task State Segment
 lazy_static! {
     static ref TSS: TaskStateSegment = {
