@@ -1,13 +1,16 @@
 # OS
 
-An Rust kernel made primarily with Philipp Oppermann's blog and the OSDEV wiki.
+A Rust kernel made primarily with Philipp Oppermann's blog and the OSDEV wiki.
 
 
 # Setup
 
-install everything and run
-- rustup component add rust-src --toolchain nightly-x86_64-unknown-linux-gnu
+pre-requirements for fedora:
+- sudo dnf groupinstall "Development Tools"
+
+To setup the environment run:
 - rustup override set nightly
+- rustup component add rust-src --toolchain nightly-x86_64-unknown-linux-gnu
 - rustup component add llvm-tools-preview
 - cargo install bootimage
 - dnf install qemu
