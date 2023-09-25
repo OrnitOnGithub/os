@@ -7,3 +7,7 @@
 or use scripts run.sh & runc.sh
 - cargo bootimage
 - qemu-system-x86_64 -drive format=raw,file=target/x86_64-rust_os/debug/bootimage-rust_os.bin
+
+# Update the shitty way
+- rm -rf os/
+- git clone https://github.com/OrnitOnGithub/os

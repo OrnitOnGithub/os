@@ -6,19 +6,6 @@ extern crate x86_64;
 use x86_64::instructions::hlt;
 use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame, PageFaultErrorCode};
 
-pub const PIC_1_OFFSET: u8 = 32; // Offsets PIC interrups 1-8 to interrupts 32-39
-pub const PIC_2_OFFSET: u8 = PIC_1_OFFSET + 8; // Same here, 1-8 to interrupts 40-47
-
-// Initialise mutex with an instance of both PICs
-//
-// Mutexes are used to synchronize access to shared
-// data in multi-threaded or multi-core environments,
-// ensuring that only one thread can access the data at a time.
-pub static PICS: spin::Mutex<ChainedPics> =
-    spin::Mutex::new(
-        unsafe { ChainedPics::new(PIC_1_OFFSET, PIC_2_OFFSET) }
-    );
-
 // This uses the IDT from the x86_64 crate.
 //
 // Lazy static can initialize static variables lazily, ensuring that
@@ -54,3 +41,16 @@ extern "x86-interrupt" fn double_fault_handler(
 {
     panic!("EXCEPTION: DOUBLE FAULT\n{:#?}", stack_frame);
 }
+
+pub const PIC_1_OFFSET: u8 = 32; // Offsets PIC interrups 1-8 to interrupts 32-39
+pub const PIC_2_OFFSET: u8 = PIC_1_OFFSET + 8; // Same here, 1-8 to interrupts 40-47
+
+// Initialise mutex with an instance of both PICs
+//
+// Mutexes are used to synchronize access to shared
+// data in multi-threaded or multi-core environments,
+// ensuring that only one thread can access the data at a time.
+pub static PICS: spin::Mutex<ChainedPics> =
+    spin::Mutex::new(
+        unsafe { ChainedPics::new(PIC_1_OFFSET, PIC_2_OFFSET) }
+    );

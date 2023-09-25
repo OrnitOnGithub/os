@@ -30,7 +30,7 @@ lazy_static! {
         let mut gdt = GlobalDescriptorTable::new();
         gdt.add_entry(Descriptor::kernel_code_segment()); // God knows?
         gdt.add_entry(Descriptor::tss_segment(&TSS)); // Give it our TSS
-        gdt
+        gdt // return
     };
 }
 
