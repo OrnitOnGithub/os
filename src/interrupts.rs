@@ -18,6 +18,8 @@ lazy_static! {
         idt.double_fault.set_handler_fn(double_fault_handler);
         idt[InterruptIndex::Timer.as_usize()]
             .set_handler_fn(timer_interrupt_handler);
+        idt[InterruptIndex::Keyboard.as_usize()] //keyboard handler func
+            .set_handler_fn(keyboard_interrupt_handler);
         idt
     };
 }
@@ -53,6 +55,9 @@ extern "x86-interrupt" fn timer_interrupt_handler(
     }
 }
 
+
+// ======| KEYBOARD |======
+
 pub const PIC_1_OFFSET: u8 = 32; // Offsets PIC interrups 1-8 to interrupts 32-39
 pub const PIC_2_OFFSET: u8 = PIC_1_OFFSET + 8; // Same here, 1-8 to interrupts 40-47
 
@@ -70,6 +75,7 @@ pub static PICS: spin::Mutex<ChainedPics> =
 #[repr(u8)]
 pub enum InterruptIndex {
     Timer = PIC_1_OFFSET + 0,
+    Keyboard,
 }
 
 impl InterruptIndex {
@@ -79,5 +85,19 @@ impl InterruptIndex {
 
     fn as_usize(self) -> usize {
         usize::from(self.as_u8())
+    }
+}
+
+extern "x86-interrupt" fn keyboard_interrupt_handler(_stack_frame: InterruptStackFrame)
+{
+    use x86_64::instructions::port::Port;
+
+    let mut port = Port::new(0x60); //Read data from I/O port 0x60. This returns a byte.
+    let scancode: u8 = unsafe { port.read() };
+    print!("{}", scancode);
+
+    unsafe {
+        PICS.lock()
+            .notify_end_of_interrupt(InterruptIndex::Keyboard.as_u8());
     }
 }
