@@ -122,7 +122,7 @@ impl Writer {
     }
 }
 
-// println macro, again, only god knows.
+// println macro, only god knows how rust macros work.
 #[macro_export]
 macro_rules! print {
     ($($arg:tt)*) => ($crate::vga_buffer::_print(format_args!($($arg)*)));
@@ -134,7 +134,14 @@ macro_rules! println {
     ($($arg:tt)*) => ($crate::print!("{}\n", format_args!($($arg)*)));
 }
 
+// Prints the given formatted string to the VGA text buffer
+// through the global `WRITER` instance.
 #[doc(hidden)]
 pub fn _print(args: fmt::Arguments) {
-    WRITER.lock().write_fmt(args).unwrap();
+    use core::fmt::Write;
+    use x86_64::instructions::interrupts;
+
+    interrupts::without_interrupts(|| { 
+        WRITER.lock().write_fmt(args).unwrap();
+    });
 }
