@@ -1,6 +1,6 @@
 # OS
 
-A Rust kernel made primarily with Philipp Oppermann's blog and the OSDEV wiki.
+A Rust kernel made primarily with Philipp Oppermann's blog and the OSDEV wiki and the revelations in my dreams.
 
 
 # Setup
