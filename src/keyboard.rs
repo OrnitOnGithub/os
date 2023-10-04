@@ -1,23 +1,41 @@
-use lazy_static::lazy_static;
-use std::sync::Mutex;
+use spin;
+use crate::print;
 
-
+#[derive(Debug)]
 pub struct KeyboardState {
-    shift:    bool,
-    capslock: bool,
-    ctrl:     bool,
+    alt      : bool,
+    ctrl     : bool,
+    shift    : bool,
+    capslock : bool,
 }
-// Create a static mutex for the keyboard state.
-lazy_static! {
-    static ref KEYBOARD_STATE: Mutex<KeyboardState> = Mutex::new(KeyboardState {
-        shift:    false,
-        capslock: false,
-        ctrl:     false,
-    });
-}
-/// This function should:
-/// - Do something
-/// - Somehow inform the API / AKI
-pub fn handle_keyboard(scancode: u8) {
+pub static KEYBOARD_STATE: spin::Mutex<KeyboardState> =
+    spin::Mutex::new(
+        KeyboardState {
+            alt      : false,
+            ctrl     : false,
+            shift    : false,
+            capslock : false,
+        }
+    );
 
+/// This function:
+/// - Updates the KEYBOARD_STATE Mutex
+pub fn handle_keyboard(scancode: u8) {
+    match scancode {
+        // Alt
+        56  => KEYBOARD_STATE.lock().alt      = true ,
+        184 => KEYBOARD_STATE.lock().alt      = false, // 56 + 128 = Key released
+        // Control
+        29  => KEYBOARD_STATE.lock().ctrl     = true ,
+        157 => KEYBOARD_STATE.lock().ctrl     = false,
+        // Shift
+        42  => KEYBOARD_STATE.lock().shift    = true ,
+        170 => KEYBOARD_STATE.lock().shift    = false,
+        // Caps Lock
+        58  => KEYBOARD_STATE.lock().capslock = true ,
+        186 => KEYBOARD_STATE.lock().capslock = false,
+
+        _   => {}
+    }
+    print!("{:?}", KEYBOARD_STATE);
 }

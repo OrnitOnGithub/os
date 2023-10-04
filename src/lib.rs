@@ -3,6 +3,7 @@
 pub mod interrupts;
 pub mod vga_buffer;
 pub mod gdt;
+pub mod keyboard;
 
 // Initiate all the initiatables. Called once at system startup.
 pub fn init() {
