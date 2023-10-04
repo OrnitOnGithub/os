@@ -12,3 +12,10 @@ pub fn init() {
     unsafe { interrupts::PICS.lock().initialize() };
     x86_64::instructions::interrupts::enable();
 }
+// Replaces the loop {} After the OS initialisation.
+// Much more resource efficiet way for the Kernel to do nothing
+pub fn hlt_loop() -> ! {
+    loop {
+        x86_64::instructions::hlt();
+    }
+}
