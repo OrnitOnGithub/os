@@ -14,6 +14,8 @@ fn panic(info: &PanicInfo) -> ! {
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
     println!("Hi mom");
+    println!("Initialising operating system.");
     rust_os::init();
+    println!("Done! Entering idleing state.");
     rust_os::hlt_loop(); 
 }

@@ -37,5 +37,4 @@ pub fn handle_keyboard(scancode: u8) {
 
         _   => {}
     }
-    print!("{:?}", KEYBOARD_STATE);
 }
