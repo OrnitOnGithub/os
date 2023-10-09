@@ -13,9 +13,9 @@ fn panic(info: &PanicInfo) -> ! {
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
-    println!("Hi mom {}", 10.0/0.0);
+    println!("Hi mom");
+    println!("Initialising operating system.");
     rust_os::init();
-
-    println!("It did not crash!");
-    loop {}
+    println!("Done!");
+    rust_os::hlt_loop(); 
 }
